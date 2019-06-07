@@ -153,3 +153,31 @@ rotate.image.1 <- rotateImage(image.1, angle)
 plot(rotate.image.1)
 ```
 
+
+
+
+```{r}
+# Quita un trozo de train y lo mete en test
+# Importante crear antes la carpeta test_pro y las diferentes carpetas para las etiquetas dentro
+separaCarlos <- function(carpeta_train, carpeta_test, porcentaje = 0.2) {
+  clases<-list.dirs(path = carpeta_train, full.names = FALSE)
+  
+  for (clase in clases){
+    if(clase != "") {
+      carpeta_clase_train <- paste(carpeta_train,clase,sep = "/")
+      carpeta_clase_test <- paste(carpeta_test,clase,sep = "/")
+      
+      todos <- list.files(path = carpeta_clase_train)
+      a_copiar <- sample(todos, length(todos)*porcentaje)
+      
+      for (fichero in a_copiar){
+        file.copy(paste(carpeta_clase_train, fichero, sep = "/"), carpeta_clase_test)
+        file.remove(paste(carpeta_clase_train, fichero, sep = "/"))
+      }
+    }
+  }
+}
+
+separaCarlos("./petfinder-adoption-prediction/train_images", "./petfinder-adoption-prediction/test_pro")
+```
+
